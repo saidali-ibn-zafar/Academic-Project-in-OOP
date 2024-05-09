@@ -114,3 +114,5 @@ console.log(laundryBleach.use());
 console.log(dishDetergent.checkExpiration());
 console.log(surfaceCleaner.checkExpiration());
 console.log(laundryBleach.checkExpiration());
+
+module.exports = { CleaningProduct, Detergent, Bleach };
