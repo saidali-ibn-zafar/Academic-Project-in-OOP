@@ -14,7 +14,6 @@ class CleaningProduct {
     return `${this.name} is used for ${this.intendedUsage}.`;
   }
 
-  // checkExpiration() - Polimorhpic method to check expiration date...
   checkExpiration() {
     if (this.expirationDate) {
       const currentDate = new Date();
@@ -27,6 +26,11 @@ class CleaningProduct {
     } else {
       return `${this.name} does not have an expiration date.`;
     }
+  }
+
+  // Polymorphic method to get safety instructions
+  getSafetyInstructions() {
+    return "Please read and follow safety instructions on the label.";
   }
 }
 
@@ -54,7 +58,11 @@ class Detergent extends CleaningProduct {
   }
 
   use() {
-    return `${super.use()}. It has a concentration of ${this.concentration}.`;
+    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}.`;
+  }
+
+  getSafetyInstructions() {
+    return "Avoid contact with eyes and skin. Keep out of reach of children.";
   }
 }
 
@@ -74,7 +82,11 @@ class Bleach extends CleaningProduct {
   }
 
   use() {
-    return `${super.use()}. It has a concentration of ${this.concentration}.`;
+    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}.`;
+  }
+
+  getSafetyInstructions() {
+    return "Use in a well-ventilated area. Do not mix with other chemicals.";
   }
 }
 
@@ -114,5 +126,9 @@ console.log(laundryBleach.use());
 console.log(dishDetergent.checkExpiration());
 console.log(surfaceCleaner.checkExpiration());
 console.log(laundryBleach.checkExpiration());
+
+console.log(dishDetergent.getSafetyInstructions());
+console.log(surfaceCleaner.getSafetyInstructions());
+console.log(laundryBleach.getSafetyInstructions());
 
 module.exports = { CleaningProduct, Detergent, Bleach };
