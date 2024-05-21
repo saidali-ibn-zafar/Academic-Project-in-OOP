@@ -16,9 +16,7 @@ class CleaningProduct {
 
   checkExpiration() {
     if (this.expirationDate) {
-      const currentDate = new Date();
-
-      if (currentDate > this.expirationDate) {
+      if (new Date() > new Date(this.expirationDate)) {
         return `${this.name} has expired.`;
       } else {
         return `${this.name} is not expired.`;
@@ -28,9 +26,9 @@ class CleaningProduct {
     }
   }
 
-  // Polymorphic method to get safety instructions
-  getSafetyInstructions() {
-    return "Please read and follow safety instructions on the label.";
+  calculateCostPerUse() {
+    const costPerUse = this.price / 5;
+    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
 
@@ -40,6 +38,8 @@ class CleaningProduct {
   Detergent - is a cleaning agent that is used to remove dirt, grease, and  stains from surfaces, particularly in washing clothes and dishes. 
 
   Bleach - is a strong chemical compound used primarily as a disinfectant and whitening agent.
+
+  Vinegar - is an acidic solution primarily composed of acetic acid and water, commonly used as a natural cleaning agent for its disinfectant properties and ability to remove stains and odors.
 ==================================================================*/
 
 // Here we are starting to declare 'Detergent' class and it is a subclass of 'CleaningProduct'
@@ -58,11 +58,12 @@ class Detergent extends CleaningProduct {
   }
 
   use() {
-    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}.`;
+    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}%.`;
   }
 
-  getSafetyInstructions() {
-    return "Avoid contact with eyes and skin. Keep out of reach of children.";
+  calculateCostPerUse() {
+    const costPerUse = this.price / 10;
+    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
 
@@ -82,11 +83,33 @@ class Bleach extends CleaningProduct {
   }
 
   use() {
-    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}.`;
+    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}%.`;
   }
 
-  getSafetyInstructions() {
-    return "Use in a well-ventilated area. Do not mix with other chemicals.";
+  calculateCostPerUse() {
+    const costPerUse = this.price / 15;
+    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
+  }
+}
+
+// Starting Vinegar subclass
+class Vinegar extends CleaningProduct {
+  constructor(name, brand, volume, price, intendedUsage, concentration) {
+    super(name, brand, volume, price, intendedUsage, null);
+    this.concentration = concentration;
+  }
+
+  use() {
+    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}%.`;
+  }
+
+  checkExpiration() {
+    return `${this.name} never expires if kept in good condition.`;
+  }
+
+  calculateCostPerUse() {
+    const costPerUse = this.price / 20;
+    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
 
@@ -96,7 +119,7 @@ const dishDetergent = new Detergent(
   "900ml",
   16.99,
   "washing dishes",
-  new Date("2022-12-02"),
+  "2022-12-02",
   10
 );
 
@@ -106,7 +129,7 @@ const surfaceCleaner = new CleaningProduct(
   "750ml",
   22.5,
   "cleaning surface",
-  new Date("2025-02-10")
+  "2025-02-10"
 );
 
 const laundryBleach = new Bleach(
@@ -115,20 +138,32 @@ const laundryBleach = new Bleach(
   "1L",
   14.45,
   "laundry",
-  new Date("2024-05-07"),
+  "2024-05-07",
   5
+);
+
+const cleaningVinegar = new Vinegar(
+  "Cleaning Vinegar",
+  "Pure Clean",
+  "500ml",
+  12.99,
+  "multi-purpose cleaning",
+  6
 );
 
 console.log(dishDetergent.use());
 console.log(surfaceCleaner.use());
 console.log(laundryBleach.use());
+console.log(cleaningVinegar.use());
 
 console.log(dishDetergent.checkExpiration());
 console.log(surfaceCleaner.checkExpiration());
 console.log(laundryBleach.checkExpiration());
+console.log(cleaningVinegar.checkExpiration());
 
-console.log(dishDetergent.getSafetyInstructions());
-console.log(surfaceCleaner.getSafetyInstructions());
-console.log(laundryBleach.getSafetyInstructions());
+console.log(dishDetergent.calculateCostPerUse());
+console.log(surfaceCleaner.calculateCostPerUse());
+console.log(laundryBleach.calculateCostPerUse());
+console.log(cleaningVinegar.calculateCostPerUse());
 
-module.exports = { CleaningProduct, Detergent, Bleach };
+module.exports = { CleaningProduct, Detergent, Bleach, Vinegar };
