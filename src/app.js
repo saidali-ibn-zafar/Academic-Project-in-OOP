@@ -1,3 +1,13 @@
+/*================================================================
+  Some information about cleaning product examples that I will use:
+
+  Detergent - is a cleaning agent that is used to remove dirt, grease, and  stains from surfaces, particularly in washing clothes and dishes. 
+
+  Bleach - is a strong chemical compound used primarily as a disinfectant and whitening agent.
+
+  Vinegar - is an acidic solution primarily composed of acetic acid and water, commonly used as a natural cleaning agent for its disinfectant properties and ability to remove stains and odors.
+==================================================================*/
+
 // Here below we have declared abstract base class
 class CleaningProduct {
   constructor(name, brand, volume, price, intendedUsage, expirationDate) {
@@ -31,16 +41,6 @@ class CleaningProduct {
     return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
-
-/*================================================================
-  Some information about cleaning product examples that I will use:
-
-  Detergent - is a cleaning agent that is used to remove dirt, grease, and  stains from surfaces, particularly in washing clothes and dishes. 
-
-  Bleach - is a strong chemical compound used primarily as a disinfectant and whitening agent.
-
-  Vinegar - is an acidic solution primarily composed of acetic acid and water, commonly used as a natural cleaning agent for its disinfectant properties and ability to remove stains and odors.
-==================================================================*/
 
 // Here we are starting to declare 'Detergent' class and it is a subclass of 'CleaningProduct'
 class Detergent extends CleaningProduct {
@@ -113,15 +113,7 @@ class Vinegar extends CleaningProduct {
   }
 }
 
-const dishDetergent = new Detergent(
-  "Dish detergent",
-  "Fast Cleaning",
-  "900ml",
-  16.99,
-  "washing dishes",
-  "2022-12-02",
-  10
-);
+module.exports = { CleaningProduct, Detergent, Bleach, Vinegar };
 
 const surfaceCleaner = new CleaningProduct(
   "Surface cleaner",
@@ -130,6 +122,16 @@ const surfaceCleaner = new CleaningProduct(
   22.5,
   "cleaning surface",
   "2025-02-10"
+);
+
+const dishDetergent = new Detergent(
+  "Dish detergent",
+  "Fast Cleaning",
+  "900ml",
+  16.99,
+  "washing dishes",
+  "2022-12-02",
+  10
 );
 
 const laundryBleach = new Bleach(
@@ -165,5 +167,3 @@ console.log(dishDetergent.calculateCostPerUse());
 console.log(surfaceCleaner.calculateCostPerUse());
 console.log(laundryBleach.calculateCostPerUse());
 console.log(cleaningVinegar.calculateCostPerUse());
-
-module.exports = { CleaningProduct, Detergent, Bleach, Vinegar };
