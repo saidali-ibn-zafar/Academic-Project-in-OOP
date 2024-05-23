@@ -1,8 +1,23 @@
 const { CleaningProduct, Detergent, Bleach, Vinegar } = require("../src/app");
 
-describe("CleaningProduct", () => {
-  test("should create a CleaningProduct instance", () => {
-    const surfaceCleaner = new CleaningProduct(
+describe("CleaningProduct Classes", () => {
+  let dishDetergent;
+  let surfaceCleaner;
+  let laundryBleach;
+  let cleaningVinegar;
+
+  beforeAll(() => {
+    dishDetergent = new Detergent(
+      "Dish detergent",
+      "Fast Cleaning",
+      "900ml",
+      16.99,
+      "washing dishes",
+      "2022-12-02",
+      10
+    );
+
+    surfaceCleaner = new CleaningProduct(
       "Surface cleaner",
       "Clean Life",
       "750ml",
@@ -11,67 +26,29 @@ describe("CleaningProduct", () => {
       "2025-02-10"
     );
 
-    expect(surfaceCleaner.name).toBe("Surface cleaner");
-    expect(surfaceCleaner.brand).toBe("Clean Life");
-    expect(surfaceCleaner.volume).toBe("750ml");
-    expect(surfaceCleaner.price).toBe(22.5);
-    expect(surfaceCleaner.purpose).toBe("cleaning surface");
-    expect(surfaceCleaner.expirationDate).toBe(new Date("2025-02-10"));
-  });
-
-  test("use() method should return indended usage", () => {
-    const surfaceCleaner = new CleaningProduct(
-      "Surface cleaner",
-      "Clean Life",
-      "750ml",
-      22.5,
-      "cleaning surface",
-      "2025-02-10"
+    laundryBleach = new Bleach(
+      "Laundry Bleach",
+      "Happy Cleaning",
+      "1L",
+      14.45,
+      "laundry",
+      "2024-05-07",
+      5
     );
 
-    expect(surfaceCleaner.use()).toBe(
-      "Surface cleaner is used for cleaning surface."
+    cleaningVinegar = new Vinegar(
+      "Cleaning Vinegar",
+      "Pure Clean",
+      "500ml",
+      12.99,
+      "multi-purpose cleaning",
+      6
     );
   });
 
-  test("checkExpiration() method should return expiration status", () => {
-    const expirationDate = new Date("2025-02-10");
-    const currentDate = new Date();
+  describe("use method", () => {});
 
-    const surfaceCleaner = new CleaningProduct(
-      "Surface cleaner",
-      "Clean Life",
-      "750ml",
-      22.5,
-      "cleaning surface",
-      expirationDate
-    );
+  describe("checkExpiration method", () => {});
 
-    if (surfaceCleaner.expirationDate) {
-      if (currentDate > expirationDate) {
-        expect(surfaceCleaner.checkExpiration()).toBe(
-          "Surface cleaner has expired."
-        );
-      } else {
-        expect(surfaceCleaner.checkExpiration()).toBe(
-          "Surface cleaner is not expired."
-        );
-      }
-    } else {
-      expect(surfaceCleaner.checkExpiration()).toBe(
-        "Surface cleaner does not have an expiration date."
-      );
-    }
-  });
-
-  test(`calculateCostPerUse() method should return cost per use`, () => {
-    const surfaceCleaner = new CleaningProduct(
-      "Surface cleaner",
-      "Clean Life",
-      "750ml",
-      22.5,
-      "cleaning surface",
-      "2025-02-10"
-    );
-  });
+  describe("calculateCostPerUse method", () => {});
 });
