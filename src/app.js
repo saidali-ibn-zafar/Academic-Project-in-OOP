@@ -116,7 +116,7 @@ class Vinegar extends CleaningProduct {
 module.exports = { CleaningProduct, Detergent, Bleach, Vinegar };
 
 const surfaceCleaner = new CleaningProduct(
-  "Surface cleaner",
+  "Surface Cleaner",
   "Clean Life",
   "750ml",
   22.5,
@@ -125,7 +125,7 @@ const surfaceCleaner = new CleaningProduct(
 );
 
 const dishDetergent = new Detergent(
-  "Dish detergent",
+  "Dish Detergent",
   "Fast Cleaning",
   "900ml",
   16.99,
@@ -135,7 +135,7 @@ const dishDetergent = new Detergent(
 );
 
 const laundryBleach = new Bleach(
-  "LaundryBleach",
+  "Laundry Bleach",
   "Happy Cleaning",
   "1L",
   14.45,
