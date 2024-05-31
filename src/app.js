@@ -1,14 +1,3 @@
-/*================================================================
-  Some information about cleaning product examples that I will use:
-
-  Detergent - is a cleaning agent that is used to remove dirt, grease, and  stains from surfaces, particularly in washing clothes and dishes. 
-
-  Bleach - is a strong chemical compound used primarily as a disinfectant and whitening agent.
-
-  Vinegar - is an acidic solution primarily composed of acetic acid and water, commonly used as a natural cleaning agent for its disinfectant properties and ability to remove stains and odors.
-==================================================================*/
-
-// Here below we have declared abstract base class
 class CleaningProduct {
   constructor(name, brand, volume, price, intendedUsage, expirationDate) {
     this.name = name;
@@ -17,11 +6,15 @@ class CleaningProduct {
     this.price = price;
     this.intendedUsage = intendedUsage;
     this.expirationDate = expirationDate;
+    this.mlPerUse = mlPerUse;
   }
 
-  // use() - Polimorphic method to be aware of information about why it should be used...
   use() {
-    return `${this.name} is used for ${this.intendedUsage}.`;
+    let usageInfo = `${this.name} is used for ${this.intendedUsage}.`;
+    if (this.concentration !== null) {
+      usageInfo += ` It has a concentration of ${this.concentration}%.`;
+    }
+    return usageInfo;
   }
 
   checkExpiration() {
@@ -37,12 +30,17 @@ class CleaningProduct {
   }
 
   calculateCostPerUse() {
-    const costPerUse = this.price / 5;
+    let volumeInML = 0;
+    if (this.volumeInML.includes("ml")) {
+      volumeInML = parseInt(this.volume);
+    } else if (this.volume.includes("L")) {
+      volumeInML = parseFloat(this.volume * 1000);
+    }
+    const totalUses = volumeInML / this.mlPerUse;
+    const costPerUse = this.price / totalUses;
     return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
-
-// Here we are starting to declare 'Detergent' class and it is a subclass of 'CleaningProduct'
 class Detergent extends CleaningProduct {
   constructor(
     name,
@@ -57,17 +55,11 @@ class Detergent extends CleaningProduct {
     this.concentration = concentration;
   }
 
-  use() {
-    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}%.`;
-  }
-
   calculateCostPerUse() {
     const costPerUse = this.price / 10;
     return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
-
-// And from here we are starting to declare 'Bleach' class, it is a subclass of 'CleaningProduct' class.
 class Bleach extends CleaningProduct {
   constructor(
     name,
@@ -82,25 +74,16 @@ class Bleach extends CleaningProduct {
     this.concentration = concentration;
   }
 
-  use() {
-    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}%.`;
-  }
-
   calculateCostPerUse() {
     const costPerUse = this.price / 15;
     return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
 
-// Starting Vinegar subclass
 class Vinegar extends CleaningProduct {
   constructor(name, brand, volume, price, intendedUsage, concentration) {
     super(name, brand, volume, price, intendedUsage, null);
     this.concentration = concentration;
-  }
-
-  use() {
-    return `${this.name} is used for ${this.intendedUsage}. It has a concentration of ${this.concentration}%.`;
   }
 
   checkExpiration() {
