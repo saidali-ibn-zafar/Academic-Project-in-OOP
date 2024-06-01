@@ -1,12 +1,24 @@
 class CleaningProduct {
-  constructor(name, brand, volume, price, intendedUsage, expirationDate) {
+  constructor(
+    name,
+    brand,
+    volume,
+    price,
+    intendedUsage,
+    expirationDate,
+    amountPerUse,
+    concentration = null,
+    type = "liquid"
+  ) {
     this.name = name;
     this.brand = brand;
     this.volume = volume;
     this.price = price;
     this.intendedUsage = intendedUsage;
     this.expirationDate = expirationDate;
-    this.mlPerUse = mlPerUse;
+    this.amountPerUse = amountPerUse;
+    this.concentration = concentration;
+    this.type = type;
   }
 
   use() {
@@ -30,17 +42,49 @@ class CleaningProduct {
   }
 
   calculateCostPerUse() {
-    let volumeInML = 0;
-    if (this.volumeInML.includes("ml")) {
-      volumeInML = parseInt(this.volume);
-    } else if (this.volume.includes("L")) {
-      volumeInML = parseFloat(this.volume * 1000);
+    let volume = 0;
+    let totalUses = 0;
+
+    switch (this.type) {
+      case "liquid":
+        if (this.volume.includes("ml")) {
+          volume = parseInt(this.volume);
+        } else if (this.volume.includes("L")) {
+          volume = parseFloat(this.volume) * 1000;
+        } else {
+          throw new Error(
+            "Invalid volume unit for liquid. Must be in milliliters (ml) or liters (L)."
+          );
+        }
+        totalUses = volume / this.amountPerUse;
+        break;
+
+      case "capsule":
+        totalUses = parseInt(this.volume);
+        break;
+
+      case "powder":
+        if (this.volume.includes("g")) {
+          volume = parseInt(this.volume);
+        } else if (this.volume.includes("kg")) {
+          volume = parseFloat(this.volume) * 1000;
+        } else {
+          throw new Error(
+            "Invalid volume unit for powder. Must be in grams (g) or kilograms (kg)."
+          );
+        }
+        totalUses = volume / this.amountPerUse;
+        break;
+
+      default:
+        throw new Error("Unknown Type!");
     }
-    const totalUses = volumeInML / this.mlPerUse;
+
     const costPerUse = this.price / totalUses;
     return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
+
 class Detergent extends CleaningProduct {
   constructor(
     name,
@@ -49,17 +93,22 @@ class Detergent extends CleaningProduct {
     price,
     intendedUsage,
     expirationDate = null,
-    concentration
+    concentration,
+    amountPerUse
   ) {
-    super(name, brand, volume, price, intendedUsage, expirationDate);
-    this.concentration = concentration;
-  }
-
-  calculateCostPerUse() {
-    const costPerUse = this.price / 10;
-    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
+    super(
+      name,
+      brand,
+      volume,
+      price,
+      intendedUsage,
+      expirationDate,
+      amountPerUse,
+      concentration
+    );
   }
 }
+
 class Bleach extends CleaningProduct {
   constructor(
     name,
@@ -68,31 +117,47 @@ class Bleach extends CleaningProduct {
     price,
     intendedUsage,
     expirationDate = null,
-    concentration
+    concentration,
+    amountPerUse
   ) {
-    super(name, brand, volume, price, intendedUsage, expirationDate);
-    this.concentration = concentration;
-  }
-
-  calculateCostPerUse() {
-    const costPerUse = this.price / 15;
-    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
+    super(
+      name,
+      brand,
+      volume,
+      price,
+      intendedUsage,
+      expirationDate,
+      amountPerUse,
+      concentration
+    );
   }
 }
 
 class Vinegar extends CleaningProduct {
-  constructor(name, brand, volume, price, intendedUsage, concentration) {
-    super(name, brand, volume, price, intendedUsage, null);
-    this.concentration = concentration;
+  constructor(
+    name,
+    brand,
+    volume,
+    price,
+    intendedUsage,
+    concentration,
+    amountPerUse
+  ) {
+    super(
+      name,
+      brand,
+      volume,
+      price,
+      intendedUsage,
+      null,
+      null,
+      concentration,
+      amountPerUse
+    );
   }
 
   checkExpiration() {
     return `${this.name} never expires if kept in good condition.`;
-  }
-
-  calculateCostPerUse() {
-    const costPerUse = this.price / 20;
-    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
   }
 }
 
@@ -114,6 +179,7 @@ const dishDetergent = new Detergent(
   16.99,
   "washing dishes",
   "2022-12-02",
+  10,
   10
 );
 
@@ -124,6 +190,7 @@ const laundryBleach = new Bleach(
   14.45,
   "laundry",
   "2024-05-07",
+  5,
   5
 );
 
