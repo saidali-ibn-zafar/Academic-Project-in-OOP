@@ -56,11 +56,17 @@ class CleaningProduct {
             "Invalid volume unit for liquid. Must be in milliliters (ml) or liters (L)."
           );
         }
-        totalUses = volume / this.amountPerUse;
+        if (this.amountPerUse.includes("ml")) {
+          totalUses = volume / parseInt(this.amountPerUse);
+        } else {
+          throw new Error(
+            "Invalid amount per use for liquid. Must be in milliliters (ml)."
+          );
+        }
         break;
 
       case "capsule":
-        totalUses = parseInt(this.volume);
+        totalUses = parseInt(this.volume) / parseInt(this.amountPerUse);
         break;
 
       case "powder":
@@ -73,7 +79,13 @@ class CleaningProduct {
             "Invalid volume unit for powder. Must be in grams (g) or kilograms (kg)."
           );
         }
-        totalUses = volume / this.amountPerUse;
+        if (this.amountPerUse.includes("g")) {
+          totalUses = volume / parseInt(this.amountPerUse);
+        } else {
+          throw new Error(
+            "Invalid amount per use for powder. Must be in grams (g)."
+          );
+        }
         break;
 
       default:
@@ -92,9 +104,10 @@ class Detergent extends CleaningProduct {
     volume,
     price,
     intendedUsage,
-    expirationDate = null,
+    expirationDate,
+    amountPerUse,
     concentration,
-    amountPerUse
+    type
   ) {
     super(
       name,
@@ -104,7 +117,8 @@ class Detergent extends CleaningProduct {
       intendedUsage,
       expirationDate,
       amountPerUse,
-      concentration
+      concentration,
+      type
     );
   }
 }
@@ -116,9 +130,10 @@ class Bleach extends CleaningProduct {
     volume,
     price,
     intendedUsage,
-    expirationDate = null,
+    expirationDate,
+    amountPerUse,
     concentration,
-    amountPerUse
+    type
   ) {
     super(
       name,
@@ -128,7 +143,8 @@ class Bleach extends CleaningProduct {
       intendedUsage,
       expirationDate,
       amountPerUse,
-      concentration
+      concentration,
+      type
     );
   }
 }
@@ -140,8 +156,9 @@ class Vinegar extends CleaningProduct {
     volume,
     price,
     intendedUsage,
+    amountPerUse,
     concentration,
-    amountPerUse
+    type
   ) {
     super(
       name,
@@ -150,9 +167,9 @@ class Vinegar extends CleaningProduct {
       price,
       intendedUsage,
       null,
-      null,
+      amountPerUse,
       concentration,
-      amountPerUse
+      type
     );
   }
 
@@ -169,7 +186,10 @@ const surfaceCleaner = new CleaningProduct(
   "750ml",
   22.5,
   "cleaning surface",
-  "2025-02-10"
+  "2025-02-10",
+  "100ml",
+  null,
+  "liquid"
 );
 
 const dishDetergent = new Detergent(
@@ -179,8 +199,9 @@ const dishDetergent = new Detergent(
   16.99,
   "washing dishes",
   "2022-12-02",
+  "2 capsules",
   10,
-  10
+  "capsule"
 );
 
 const laundryBleach = new Bleach(
@@ -190,8 +211,9 @@ const laundryBleach = new Bleach(
   14.45,
   "laundry",
   "2024-05-07",
+  "75ml",
   5,
-  5
+  "liquid"
 );
 
 const cleaningVinegar = new Vinegar(
@@ -200,7 +222,9 @@ const cleaningVinegar = new Vinegar(
   "500ml",
   12.99,
   "multi-purpose cleaning",
-  6
+  "50ml",
+  6,
+  "liquid"
 );
 
 console.log(dishDetergent.use());
