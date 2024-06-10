@@ -1,12 +1,50 @@
 const { CleaningProduct, Detergent, Bleach, Vinegar } = require("../src/app");
 
-describe("CleaningProduct Classes", () => {
-  let dishDetergent;
+describe("CleaningProduct", () => {
   let surfaceCleaner;
-  let laundryBleach;
-  let cleaningVinegar;
 
-  beforeAll(() => {
+  beforeEach(() => {
+    surfaceCleaner = new CleaningProduct(
+      "Surface Cleaner",
+      "Clean Life",
+      "750ml",
+      22.5,
+      "cleaning surface",
+      "2025-02-10",
+      "100ml",
+      null
+    );
+  });
+
+  test("use returns correct usage information", () => {
+    expect(surfaceCleaner.use()).toBe(
+      "Surface Cleaner is used for cleaning surface."
+    );
+  });
+
+  test("checkExpiration returns correct expiration status", () => {
+    expect(surfaceCleaner.checkExpiration()).toBe(
+      "Surface Cleaner is not expired."
+    );
+  });
+
+  test("calculateCostPerUse calculates cost per use correctly", () => {
+    expect(surfaceCleaner.calculateCostPerUse()).toBe(
+      "Surface Cleaner costs 3.00PLN per use."
+    );
+  });
+
+  test("getSafetyInstructions returns correct safety instructions", () => {
+    expect(surfaceCleaner.getSafetyInstructions()).toBe(
+      "Please read specific safety instructions for Surface Cleaner."
+    );
+  });
+});
+
+describe("Detergent", () => {
+  let dishDetergent;
+
+  beforeEach(() => {
     dishDetergent = new Detergent(
       "Dish Detergent",
       "Fast Cleaning",
@@ -14,18 +52,38 @@ describe("CleaningProduct Classes", () => {
       16.99,
       "washing dishes",
       "2022-12-02",
+      "100ml",
       10
     );
+  });
 
-    surfaceCleaner = new CleaningProduct(
-      "Surface Cleaner",
-      "Clean Life",
-      "750ml",
-      22.5,
-      "cleaning surface",
-      "2025-02-10"
+  test("use returns correct usage information", () => {
+    expect(dishDetergent.use()).toBe(
+      "Dish Detergent is used for washing dishes. It has a concentration of 10%."
     );
+  });
 
+  test("checkExpiration returns correct expiration status", () => {
+    expect(dishDetergent.checkExpiration()).toBe("Dish Detergent has expired.");
+  });
+
+  test("calculateCostPerUse calculates cost per use correctly", () => {
+    expect(dishDetergent.calculateCostPerUse()).toBe(
+      "Dish Detergent costs 1.89PLN per use."
+    );
+  });
+
+  test("getSafetyInstructions returns correct safety instructions", () => {
+    expect(dishDetergent.getSafetyInstructions()).toBe(
+      "Dish Detergent: Wear gloves when using. Avoid contact with eyes and prolonged skin contact."
+    );
+  });
+});
+
+describe("Bleach", () => {
+  let laundryBleach;
+
+  beforeEach(() => {
     laundryBleach = new Bleach(
       "Laundry Bleach",
       "Happy Cleaning",
@@ -33,90 +91,70 @@ describe("CleaningProduct Classes", () => {
       14.45,
       "laundry",
       "2024-05-07",
+      "75ml",
       5
     );
+  });
 
+  test("use returns correct usage information", () => {
+    expect(laundryBleach.use()).toBe(
+      "Laundry Bleach is used for laundry. It has a concentration of 5%."
+    );
+  });
+
+  test("checkExpiration returns correct expiration status", () => {
+    expect(laundryBleach.checkExpiration()).toBe("Laundry Bleach has expired.");
+  });
+
+  test("calculateCostPerUse calculates cost per use correctly", () => {
+    expect(laundryBleach.calculateCostPerUse()).toBe(
+      "Laundry Bleach costs 1.08PLN per use."
+    );
+  });
+
+  test("getSafetyInstructions returns correct safety instructions", () => {
+    expect(laundryBleach.getSafetyInstructions()).toBe(
+      "Laundry Bleach: Use in a well-ventilated area. Do not mix with other chemicals, especially ammonia."
+    );
+  });
+});
+
+describe("Detergent", () => {
+  let cleaningVinegar;
+
+  beforeEach(() => {
     cleaningVinegar = new Vinegar(
       "Cleaning Vinegar",
       "Pure Clean",
       "500ml",
       12.99,
       "multi-purpose cleaning",
+      "50ml",
       6
     );
   });
 
-  describe("use method", () => {
-    test("should return correct use information for Detergent", () => {
-      const result = dishDetergent.use();
-      expect(result).toBe(
-        "Dish Detergent is used for washing dishes. It has a concentration of 10%."
-      );
-    });
-
-    test("should return correct use information for Bleach", () => {
-      const result = laundryBleach.use();
-      expect(result).toBe(
-        "Laundry Bleach is used for laundry. It has a concentration of 5%."
-      );
-    });
-
-    test("should return correct use information for Vinegar", () => {
-      const result = cleaningVinegar.use();
-      expect(result).toBe(
-        "Cleaning Vinegar is used for multi-purpose cleaning. It has a concentration of 6%."
-      );
-    });
-
-    test("should return correct use information for CleaningProduct", () => {
-      const result = surfaceCleaner.use();
-      expect(result).toBe("Surface Cleaner is used for cleaning surface.");
-    });
+  test("use returns correct usage information", () => {
+    expect(cleaningVinegar.use()).toBe(
+      "Cleaning Vinegar is used for multi-purpose cleaning. It has a concentration of 6%."
+    );
   });
 
-  describe("checkExpiration method", () => {
-    test("should return expired for past expiration date", () => {
-      const result = dishDetergent.checkExpiration();
-      expect(result).toBe("Dish Detergent has expired.");
-    });
-
-    test("should return not expired for future expiration date", () => {
-      const result = surfaceCleaner.checkExpiration();
-      expect(result).toBe("Surface Cleaner is not expired.");
-    });
-
-    test("should return expired for past expiration date", () => {
-      const result = laundryBleach.checkExpiration();
-      expect(result).toBe("Laundry Bleach has expired.");
-    });
-
-    test("should return never expires for Vinegar", () => {
-      const result = cleaningVinegar.checkExpiration();
-      expect(result).toBe(
-        "Cleaning Vinegar never expires if kept in good condition."
-      );
-    });
+  test("checkExpiration returns correct expiration status", () => {
+    expect(cleaningVinegar.checkExpiration()).toBe(
+      "Cleaning Vinegar never expires if kept in good condition."
+    );
   });
 
-  describe("calculateCostPerUse method", () => {
-    test("should return correct cost per use for Detergent", () => {
-      const result = dishDetergent.calculateCostPerUse();
-      expect(result).toBe("Dish Detergent costs $1.70 per use.");
-    });
+  test("calculateCostPerUse calculates cost per use correctly", () => {
+    expect(cleaningVinegar.calculateCostPerUse()).toBe(
+      "Cleaning Vinegar costs 1.30PLN per use."
+    );
+  });
 
-    test("should return correct cost per use for Bleach", () => {
-      const result = laundryBleach.calculateCostPerUse();
-      expect(result).toBe("Laundry Bleach costs $0.96 per use.");
-    });
-
-    test("should return correct cost per use for Vinegar", () => {
-      const result = cleaningVinegar.calculateCostPerUse();
-      expect(result).toBe("Cleaning Vinegar costs $0.65 per use.");
-    });
-
-    test("should return correct cost per use for CleaningProduct", () => {
-      const result = surfaceCleaner.calculateCostPerUse();
-      expect(result).toBe("Surface Cleaner costs $4.50 per use.");
-    });
+  test("getSafetyInstructions returns correct safety instructions", () => {
+    expect(cleaningVinegar.getSafetyInstructions()).toBe(
+      "Cleaning Vinegar: Avoid inhalation and contact with eyes. Store in a cool, dry place."
+    );
   });
 });
