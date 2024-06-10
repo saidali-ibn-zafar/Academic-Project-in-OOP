@@ -99,7 +99,9 @@ class Detergent extends CleaningProduct {
         case "fabric":
           return `When used on fabric surfaces, ${this.name} helps to lift and remove tough stains, leaving fabrics clean and fresh.`;
         default:
-          throw new Error("Surface type not supported or contact with seller");
+          throw new Error(
+            "Surface type not supported. Please contact the seller for more..."
+          );
       }
     } else {
       throw new Error("Surface type must be a string.");
@@ -134,6 +136,25 @@ class Bleach extends CleaningProduct {
     );
   }
 
+  reactToSurface(surfaceType) {
+    if (typeof surfaceType === "string") {
+      switch (surfaceType.toLowerCase()) {
+        case "glass":
+          return `Effectively removes stains and disinfects, leaving glass sparkling clean when used on glass surfaces with ${this.name}.`;
+        case "metal":
+          return `Sanitizes and shines metal surfaces, effectively removing stains and odors with ${this.name}.`;
+        case "fabric":
+          return `Whitens and brightens fabrics, removing tough stains and odors when added to laundry with ${this.name}.`;
+        default:
+          throw new Error(
+            "Surface type not supported. Please contact the seller for more..."
+          );
+      }
+    } else {
+      throw new Error("Surface type must be a string.");
+    }
+  }
+
   getSafetyInstructions() {
     return `${this.name}: Use in a well-ventilated area. Do not mix with other chemicals, especially ammonia.`;
   }
@@ -165,6 +186,25 @@ class Vinegar extends CleaningProduct {
     return `${this.name} never expires if kept in good condition.`;
   }
 
+  reactToSurface(surfaceType) {
+    if (typeof surfaceType === "string") {
+      switch (surfaceType.toLowerCase()) {
+        case "glass":
+          return `Glass surfaces are effectively cleaned and streak-free when treated with ${this.name}.`;
+        case "metal":
+          return `Metal surfaces shine brightly and are effectively cleaned with the use of ${this.name}.`;
+        case "fabric":
+          return `Fabrics are gently cleaned and refreshed when treated with ${this.name}.`;
+        default:
+          throw new Error(
+            "Surface type not supported. Please contact the seller for more..."
+          );
+      }
+    } else {
+      throw new Error("Surface type must be a string.");
+    }
+  }
+
   getSafetyInstructions() {
     return `${this.name}: Avoid inhalation and contact with eyes. Store in a cool, dry place.`;
   }
@@ -179,7 +219,7 @@ const surfaceCleaner = new CleaningProduct(
   22.5,
   "cleaning surface",
   "2025-02-10",
-  "100ml",
+  "120ml",
   null
 );
 
@@ -215,17 +255,11 @@ const cleaningVinegar = new Vinegar(
   6
 );
 
-console.log(dishDetergent.use());
-console.log(surfaceCleaner.use());
-console.log(laundryBleach.use());
-console.log(cleaningVinegar.use());
-
-console.log(dishDetergent.checkExpiration());
-console.log(surfaceCleaner.checkExpiration());
-console.log(laundryBleach.checkExpiration());
-console.log(cleaningVinegar.checkExpiration());
-
-console.log(dishDetergent.calculateCostPerUse());
-console.log(surfaceCleaner.calculateCostPerUse());
-console.log(laundryBleach.calculateCostPerUse());
-console.log(cleaningVinegar.calculateCostPerUse());
+const products = [dishDetergent, laundryBleach, cleaningVinegar];
+products.forEach((product) => {
+  console.log(product.use());
+  console.log(product.checkExpiration());
+  console.log(product.calculateCostPerUse());
+  console.log(product.reactToSurface("metal"));
+  console.log(product.getSafetyInstructions());
+});
