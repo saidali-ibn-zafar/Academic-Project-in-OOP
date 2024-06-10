@@ -11,7 +11,7 @@ describe("CleaningProduct", () => {
       22.5,
       "cleaning surface",
       "2025-02-10",
-      "100ml",
+      "120ml",
       null
     );
   });
@@ -30,7 +30,7 @@ describe("CleaningProduct", () => {
 
   test("calculateCostPerUse calculates cost per use correctly", () => {
     expect(surfaceCleaner.calculateCostPerUse()).toBe(
-      "Surface Cleaner costs 3.00PLN per use."
+      "Surface Cleaner costs 3.60PLN per use."
     );
   });
 
@@ -78,6 +78,35 @@ describe("Detergent", () => {
       "Dish Detergent: Wear gloves when using. Avoid contact with eyes and prolonged skin contact."
     );
   });
+  test("should return correct message for glass surface", () => {
+    expect(dishDetergent.reactToSurface("glass")).toBe(
+      "When applied to glass surfaces, Dish Detergent produces a streak-free shine, removing dirt and grime effectively."
+    );
+  });
+
+  test("should return correct message for metal surface", () => {
+    expect(dishDetergent.reactToSurface("metal")).toBe(
+      "The metal surfaces become spotless and shiny with the use of Dish Detergent, removing grease and stains effectively."
+    );
+  });
+
+  test("should return correct message for fabric surface", () => {
+    expect(dishDetergent.reactToSurface("fabric")).toBe(
+      "When used on fabric surfaces, Dish Detergent helps to lift and remove tough stains, leaving fabrics clean and fresh."
+    );
+  });
+
+  test("should throw error for unsupported surface type", () => {
+    expect(() => dishDetergent.reactToSurface("wood")).toThrow(
+      "Surface type not supported. Please contact the seller for more..."
+    );
+  });
+
+  test("should throw error if surface type is not a string", () => {
+    expect(() => dishDetergent.reactToSurface(123)).toThrow(
+      "Surface type must be a string."
+    );
+  });
 });
 
 describe("Bleach", () => {
@@ -117,9 +146,39 @@ describe("Bleach", () => {
       "Laundry Bleach: Use in a well-ventilated area. Do not mix with other chemicals, especially ammonia."
     );
   });
+
+  test("should return correct message for glass surface", () => {
+    expect(laundryBleach.reactToSurface("glass")).toBe(
+      "Effectively removes stains and disinfects, leaving glass sparkling clean when used on glass surfaces with Laundry Bleach."
+    );
+  });
+
+  test("should return correct message for metal surface", () => {
+    expect(laundryBleach.reactToSurface("metal")).toBe(
+      "Sanitizes and shines metal surfaces, effectively removing stains and odors with Laundry Bleach."
+    );
+  });
+
+  test("should return correct message for fabric surface", () => {
+    expect(laundryBleach.reactToSurface("fabric")).toBe(
+      "Whitens and brightens fabrics, removing tough stains and odors when added to laundry with Laundry Bleach."
+    );
+  });
+
+  test("should throw error for unsupported surface type", () => {
+    expect(() => laundryBleach.reactToSurface("wood")).toThrow(
+      "Surface type not supported. Please contact the seller for more..."
+    );
+  });
+
+  test("should throw error if surface type is not a string", () => {
+    expect(() => laundryBleach.reactToSurface(123)).toThrow(
+      "Surface type must be a string."
+    );
+  });
 });
 
-describe("Detergent", () => {
+describe("Vinegar", () => {
   let cleaningVinegar;
 
   beforeEach(() => {
@@ -155,6 +214,36 @@ describe("Detergent", () => {
   test("getSafetyInstructions returns correct safety instructions", () => {
     expect(cleaningVinegar.getSafetyInstructions()).toBe(
       "Cleaning Vinegar: Avoid inhalation and contact with eyes. Store in a cool, dry place."
+    );
+  });
+
+  test("should return correct message for glass surface", () => {
+    expect(cleaningVinegar.reactToSurface("glass")).toBe(
+      "Glass surfaces are effectively cleaned and streak-free when treated with Cleaning Vinegar."
+    );
+  });
+
+  test("should return correct message for metal surface", () => {
+    expect(cleaningVinegar.reactToSurface("metal")).toBe(
+      "Metal surfaces shine brightly and are effectively cleaned with the use of Cleaning Vinegar."
+    );
+  });
+
+  test("should return correct message for fabric surface", () => {
+    expect(cleaningVinegar.reactToSurface("fabric")).toBe(
+      "Fabrics are gently cleaned and refreshed when treated with Cleaning Vinegar."
+    );
+  });
+
+  test("should throw error for unsupported surface type", () => {
+    expect(() => cleaningVinegar.reactToSurface("wood")).toThrow(
+      "Surface type not supported. Please contact the seller for more..."
+    );
+  });
+
+  test("should throw error if surface type is not a string", () => {
+    expect(() => cleaningVinegar.reactToSurface(123)).toThrow(
+      "Surface type must be a string."
     );
   });
 });
