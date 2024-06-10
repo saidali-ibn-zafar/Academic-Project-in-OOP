@@ -7,8 +7,7 @@ class CleaningProduct {
     intendedUsage,
     expirationDate,
     amountPerUse,
-    concentration = null,
-    type = "liquid"
+    concentration = null
   ) {
     this.name = name;
     this.brand = brand;
@@ -18,7 +17,6 @@ class CleaningProduct {
     this.expirationDate = expirationDate;
     this.amountPerUse = amountPerUse;
     this.concentration = concentration;
-    this.type = type;
   }
 
   use() {
@@ -42,58 +40,29 @@ class CleaningProduct {
   }
 
   calculateCostPerUse() {
-    let volume = 0;
-    let totalUses = 0;
-
-    switch (this.type) {
-      case "liquid":
-        if (this.volume.includes("ml")) {
-          volume = parseInt(this.volume);
-        } else if (this.volume.includes("L")) {
-          volume = parseFloat(this.volume) * 1000;
-        } else {
-          throw new Error(
-            "Invalid volume unit for liquid. Must be in milliliters (ml) or liters (L)."
-          );
-        }
-        if (this.amountPerUse.includes("ml")) {
-          totalUses = volume / parseInt(this.amountPerUse);
-        } else {
-          throw new Error(
-            "Invalid amount per use for liquid. Must be in milliliters (ml)."
-          );
-        }
-        break;
-
-      case "capsule":
-        totalUses = parseInt(this.volume) / parseInt(this.amountPerUse);
-        break;
-
-      case "powder":
-        if (this.volume.includes("g")) {
-          volume = parseInt(this.volume);
-        } else if (this.volume.includes("kg")) {
-          volume = parseFloat(this.volume) * 1000;
-        } else {
-          throw new Error(
-            "Invalid volume unit for powder. Must be in grams (g) or kilograms (kg)."
-          );
-        }
-        if (this.amountPerUse.includes("g")) {
-          totalUses = volume / parseInt(this.amountPerUse);
-        } else {
-          throw new Error(
-            "Invalid amount per use for powder. Must be in grams (g)."
-          );
-        }
-        break;
-
-      default:
-        throw new Error("Unknown Type!");
+    let volumeInML = 0;
+    let amountPerUse = parseInt(this.amountPerUse);
+    if (this.volume.includes("ml")) {
+      volumeInML = parseInt(this.volume);
+    } else if (this.volume.includes("L")) {
+      volumeInML = parseFloat(this.volume) * 1000;
     }
 
-    const costPerUse = this.price / totalUses;
-    return `${this.name} costs $${costPerUse.toFixed(2)} per use.`;
+    let totalUses = volumeInML / amountPerUse;
+
+    return `${this.name} costs ${(this.price / totalUses).toFixed(
+      2
+    )}PLN per use.`;
+  }
+
+  reactToSurface(surfaceType) {
+    throw new Error(
+      'Method "reactToSurface" must be implemented by subclasses.'
+    );
+  }
+
+  getSafetyInstructions() {
+    return `Please read specific safety instructions for ${this.name}.`;
   }
 }
 
@@ -106,8 +75,7 @@ class Detergent extends CleaningProduct {
     intendedUsage,
     expirationDate,
     amountPerUse,
-    concentration,
-    type
+    concentration
   ) {
     super(
       name,
@@ -117,9 +85,29 @@ class Detergent extends CleaningProduct {
       intendedUsage,
       expirationDate,
       amountPerUse,
-      concentration,
-      type
+      concentration
     );
+  }
+
+  reactToSurface(surfaceType) {
+    if (typeof surfaceType === "string") {
+      switch (surfaceType.toLowerCase()) {
+        case "glass":
+          return `When applied to glass surfaces, ${this.name} produces a streak-free shine, removing dirt and grime effectively.`;
+        case "metal":
+          return `The metal surfaces become spotless and shiny with the use of ${this.name}, removing grease and stains effectively.`;
+        case "fabric":
+          return `When used on fabric surfaces, ${this.name} helps to lift and remove tough stains, leaving fabrics clean and fresh.`;
+        default:
+          throw new Error("Surface type not supported or contact with seller");
+      }
+    } else {
+      throw new Error("Surface type must be a string.");
+    }
+  }
+
+  getSafetyInstructions() {
+    return `${this.name}: Wear gloves when using. Avoid contact with eyes and prolonged skin contact.`;
   }
 }
 
@@ -132,8 +120,7 @@ class Bleach extends CleaningProduct {
     intendedUsage,
     expirationDate,
     amountPerUse,
-    concentration,
-    type
+    concentration
   ) {
     super(
       name,
@@ -143,9 +130,12 @@ class Bleach extends CleaningProduct {
       intendedUsage,
       expirationDate,
       amountPerUse,
-      concentration,
-      type
+      concentration
     );
+  }
+
+  getSafetyInstructions() {
+    return `${this.name}: Use in a well-ventilated area. Do not mix with other chemicals, especially ammonia.`;
   }
 }
 
@@ -157,8 +147,7 @@ class Vinegar extends CleaningProduct {
     price,
     intendedUsage,
     amountPerUse,
-    concentration,
-    type
+    concentration
   ) {
     super(
       name,
@@ -168,13 +157,16 @@ class Vinegar extends CleaningProduct {
       intendedUsage,
       null,
       amountPerUse,
-      concentration,
-      type
+      concentration
     );
   }
 
   checkExpiration() {
     return `${this.name} never expires if kept in good condition.`;
+  }
+
+  getSafetyInstructions() {
+    return `${this.name}: Avoid inhalation and contact with eyes. Store in a cool, dry place.`;
   }
 }
 
@@ -188,8 +180,7 @@ const surfaceCleaner = new CleaningProduct(
   "cleaning surface",
   "2025-02-10",
   "100ml",
-  null,
-  "liquid"
+  null
 );
 
 const dishDetergent = new Detergent(
@@ -199,9 +190,8 @@ const dishDetergent = new Detergent(
   16.99,
   "washing dishes",
   "2022-12-02",
-  "2 capsules",
-  10,
-  "capsule"
+  "100ml",
+  10
 );
 
 const laundryBleach = new Bleach(
@@ -212,8 +202,7 @@ const laundryBleach = new Bleach(
   "laundry",
   "2024-05-07",
   "75ml",
-  5,
-  "liquid"
+  5
 );
 
 const cleaningVinegar = new Vinegar(
@@ -223,8 +212,7 @@ const cleaningVinegar = new Vinegar(
   12.99,
   "multi-purpose cleaning",
   "50ml",
-  6,
-  "liquid"
+  6
 );
 
 console.log(dishDetergent.use());
